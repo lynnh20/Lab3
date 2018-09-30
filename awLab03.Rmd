@@ -23,14 +23,46 @@ head(HAPPY)
 HAPPY$POLVIEWS[(HAPPY$POLVIEWS %in% c('IAP','DK','NA'))] = NA
 ```
 
-# Question 2 Check the type of the variable and cast into the right type (factor variable for categorical variables). For age, change “89 OR OLDER” to 89 and assume the variable should be numeric.
+# Question 2 
 ```{r}
+summary(HAPPY)
 
+HAPPY$HAPPY <- as.factor(HAPPY$HAPPY)
+HAPPY$SEX <- as.factor(HAPPY$SEX)
+HAPPY$MARITAL <- as.factor(HAPPY$MARITAL)
+HAPPY$DEGREE <- as.factor(HAPPY$DEGREE)
+HAPPY$FINRELA <- as.factor(HAPPY$FINRELA)
+HAPPY$HEALTH <- as.factor(HAPPY$HEALTH)
+HAPPY$PARTYID <- as.factor(HAPPY$PARTYID)
+HAPPY$POLVIEWS <- as.factor(HAPPY$POLVIEWS)
+
+HAPPY$AGE[HAPPY$AGE == '89 OR OLDER'] <- '89'
+HAPPY$AGE <- as.numeric(HAPPY$AGE)
+
+summary(HAPPY)
 ```
 
 # Question 3
-Bring all levels of factors into a sensible order. For marital you could e.g. order the levels according to average age
 ```{r}
-
+HAPPY$HAPPY <- reorder(HAPPY$HAPPY, HAPPY$AGE, mean)
+HAPPY$SEX <- reorder(HAPPY$SEX, HAPPY$AGE, mean)
+HAPPY$MARITAL <- reorder(HAPPY$MARITAL, HAPPY$AGE, mean)
+HAPPY$DEGREE <- factor(HAPPY$DEGREE,levels(HAPPY$DEGREE)[c(6,4,5,1,3,2)])
+HAPPY$FINRELA <- reorder(HAPPY$FINRELA, HAPPY$AGE, mean)
+HAPPY$HEALTH <- factor(HAPPY$HEALTH,levels(HAPPY$HEALTH)[c(6,3,4,2,1,5)])
+HAPPY$PARTYID <- reorder(HAPPY$PARTYID, HAPPY$AGE, mean)
+HAPPY$POLVIEWS <- reorder(HAPPY$POLVIEWS, HAPPY$AGE, mean)
 ```
 
+# Individual Ivestigation  
+How are Health, Marital Status, and Happiness related?
+```{r}
+library(ggplot2) #AGE and HEALTH
+
+ggplot(HAPPY, aes(x = HEALTH)) +
+  geom_bar(aes(fill = MARITAL)) +
+  facet_wrap(~HAPPY) +
+  coord_flip()
+```
+
+Overall we can see that most people are "Pretty Happy" and less people are "Not Too Happy". In the Happy categories, people are mainly "Married" (or "Never Married") with most people in "Good" or "Excellent" health.  Meanwhile the "Not Too Happy" category doesn't appear to have any trends (though there are possibly more people in "Good" or "Fair"  health than in the other categories).
