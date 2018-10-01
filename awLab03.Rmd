@@ -54,7 +54,7 @@ HAPPY$PARTYID <- reorder(HAPPY$PARTYID, HAPPY$AGE, mean)
 HAPPY$POLVIEWS <- reorder(HAPPY$POLVIEWS, HAPPY$AGE, mean)
 ```
 
-# Individual Ivestigation  
+# Aisha's Ivestigation  
 How are Health, Marital Status, and Happiness related?
 ```{r}
 library(ggplot2) #AGE and HEALTH
