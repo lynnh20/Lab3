@@ -97,6 +97,9 @@ Happy.Clean = saveRDS(happy, "happy.RDS")
 Exploration question
 
 #Indivdual Portions
+#1: Prateek looked at the correlation marital status and happiness, which is a super basic question but he's a little lost because he's been missing class :C (please don't a mark down Lynn and Aisha if I did something wrong here)
+But there's this mosaic plot which looks pretty cool. Mosaic plots allow you to find relationships by providing an overview of data and 
+bin size, so you can look at the area of the tiles to see what the relationships are. From there, you can tell that married men and women have the biggest bins in the pretty happy and very happy categories, while they are about even in the not happy category. There seems to be a less of an impact for the never married and separated demographics. 
 ```{r}
 library(ggplot2)
 library(ggmosaic)
