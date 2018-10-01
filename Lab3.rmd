@@ -1,0 +1,102 @@
+DS 202 Lab 3
+
+Names: Lynn Huang and Aisha Washington and also Prateek is here
+
+Link to github repository: https://github.com/lynnh20/Lab3/ 
+
+Reading in data and relevant packages
+```{r}
+library(ggplot2)
+library(dplyr)
+library(productplots)
+data(happy)
+happy = readRDS("data/HAPPY.rds")
+dim(happy)
+#Happy has 62,466 entries and 11 variables
+```
+
+Cleaning questions:
+
+#1 Replace all instances of "IAP", "DK","NA" with NA.
+```{r}
+for (i in 1:62466)
+{
+  for (j in 1:11)
+  {
+    if (happy[i,j] == "IAP" || is.na(happy[i,j]))
+    {
+      happy[i,j] = NA
+    }
+    else if (happy[i,j] == "DK" || is.na(happy[i,j]))
+    {
+      happy[i,j] = NA
+    }
+    else if (happy[i,j] == "NA" || is.na(happy[i,j]))
+    {
+      happy[i,j] = NA
+    }
+    else
+    {
+      happy[i,j] = happy[i,j]
+    }
+  }
+  
+}
+```
+Cast any categorical variables to factor and replace "89 OR OLDER" in AGE to 89, then cast as numeric
+```{r}
+str(happy)
+```
+We cast the variables: HAPPY, SEX,MARITAL,FINRELA,HEALTH,DEGREE, PARTYID, and POLVIEWS as factor variables
+```{r}
+happy$AGE[happy$AGE == "89 OR OLDER"] = 89 
+happy$AGE = as.numeric(happy$AGE)
+happy$HAPPY = as.factor(happy$HAPPY)
+happy$SEX = as.factor(happy$SEX)
+happy$MARITAL = as.factor(happy$MARITAL)
+happy$FINRELA = as.factor(happy$FINRELA)
+happy$HEALTH = as.factor(happy$HEALTH)
+happy$DEGREE = as.factor(happy$DEGREE)
+happy$PARTYID = as.factor(happy$PARTYID)
+happy$POLVIEWS = as.factor(happy$POLVIEWS)
+```
+
+#Bring all levels of factors to a sensible order
+
+MARITAL is now arranged in ascending order by average age, all other variables are arranged in an ascending order that fits the category. 
+```{r}
+sub = happy %>% group_by(MARITAL) %>% summarise(mean = mean(AGE, na.rm = TRUE))
+sub
+```
+
+```{r}
+#HAPPY does not need to be reordered
+
+#order marital by average age??
+levels(factor(happy$MARITAL, levels = c("NEVER MARRIED","SEPARATED","MARRIED","DIVORCED","WIDOWED",NA)))
+q#FINRELA
+levels(factor(happy$FINRELA, levels=c("FAR BELOW AVERAGE", "BELOW AVERAGE","AVERAGE","ABOVE AVERAGE","FAR ABOVE AVERAGE", NA)))
+#HEALTH
+levels(factor(happy$HEALTH, levels=c("POOR","FAIR","GOOD","EXCELLENT",NA)))
+#DEGREE
+levels(factor(happy$DEGREE, levels=c("LT HIGH SCHOOL","HIGH SCHOOL", "JUNIOR COLLEGE","BACHELOR","GRADUATE",NA)))
+#PARTYID
+levels(factor(happy$PARTYID, levels =c("STRONG DEMOCRAT","NOT STR DEMOCRAT","IND,NEAR DEM","INDEPENDENT","IND,NEAR REP","NOT STR REPUBLICAN","STRONG REPUBLICAN","OTHER PARTY",NA)))
+#POLVIEWS
+levels(factor(happy$POLVIEWS,levels =c("EXTREMELY LIBERAL","LIBERAL","SLIGHTLY LIBERAL","MODERATE","SLIGHTLY CONSERVATIVE","CONSERVATIVE","EXTREMELY CONSERVATIVE",NA)))
+```
+```{r}
+```
+#Indivdual Portions
+#1: Prateek looked at the correlation marital status and happiness, which is a super basic question but he's a little lost because he's been missing class :C (please don't a mark down Lynn and Aisha if I did something wrong here)
+But there's this mosaic plot which looks pretty cool. Mosaic plots allow you to find relationships by providing an overview of data and 
+bin size, so you can look at the area of the tiles to see what the relationships are. From there, you can tell that married men and women have the biggest bins in the pretty happy and very happy categories, while they are about even in the not happy category. There seems to be a less of an impact for the never married and separated demographics. 
+```{r}
+library(ggplot2)
+library(ggmosaic)
+
+ggplot(data = happy) +
+  geom_mosaic(aes(x = product(HAPPY, SEX), fill=MARITAL, weight=1)) + coord_flip()
+```
+```{r}
+```
