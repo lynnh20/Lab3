@@ -65,6 +65,11 @@ happy$POLVIEWS = as.factor(happy$POLVIEWS)
 
 MARITAL is now arranged in ascending order by average age, all other variables are arranged in an ascending order that fits the category. 
 ```{r}
+sub = happy %>% group_by(MARITAL) %>% summarise(mean = mean(AGE, na.rm = TRUE))
+sub
+```
+
+```{r}
 #HAPPY does not need to be reordered
 
 #order marital by average age??
@@ -80,7 +85,6 @@ levels(factor(happy$PARTYID, levels =c("STRONG DEMOCRAT","NOT STR DEMOCRAT","IND
 #POLVIEWS
 levels(factor(happy$POLVIEWS,levels =c("EXTREMELY LIBERAL","LIBERAL","SLIGHTLY LIBERAL","MODERATE","SLIGHTLY CONSERVATIVE","CONSERVATIVE","EXTREMELY CONSERVATIVE",NA)))
 ```
-
 ```{r}
 ```
 
