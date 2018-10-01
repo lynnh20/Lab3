@@ -85,7 +85,10 @@ levels(factor(happy$PARTYID, levels =c("STRONG DEMOCRAT","NOT STR DEMOCRAT","IND
 #POLVIEWS
 levels(factor(happy$POLVIEWS,levels =c("EXTREMELY LIBERAL","LIBERAL","SLIGHTLY LIBERAL","MODERATE","SLIGHTLY CONSERVATIVE","CONSERVATIVE","EXTREMELY CONSERVATIVE",NA)))
 ```
+#Saving final dataset
 ```{r}
+fn = file.choose()
+Happy.Clean = saveRDS(happy, "happy.RDS")
 ```
 
 ```{r}
