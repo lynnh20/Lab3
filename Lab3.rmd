@@ -1,6 +1,6 @@
 DS 202 Lab 3
 
-Names: Lynn Huang and Aisha Washington
+Names: Lynn Huang and Aisha Washington and also Prateek is here
 
 Link to github repository: https://github.com/lynnh20/Lab3/ 
 
@@ -89,11 +89,20 @@ levels(factor(happy$POLVIEWS,levels =c("EXTREMELY LIBERAL","LIBERAL","SLIGHTLY L
 ```{r}
 Happy.Clean = saveRDS(happy, "happy.RDS")
 ```
+<<<<<<< HEAD
 
+```{r}
+```
 
 Exploration question
-```{r}
 
+#Indivdual Portions
+```{r}
+library(ggplot2)
+library(ggmosaic)
+
+ggplot(data = happy) +
+  geom_mosaic(aes(x = product(HAPPY, SEX), fill=MARITAL, weight=1)) + coord_flip()
 ```
 ```{r}
 ```
