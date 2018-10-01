@@ -87,11 +87,13 @@ levels(factor(happy$POLVIEWS,levels =c("EXTREMELY LIBERAL","LIBERAL","SLIGHTLY L
 ```
 #Saving final dataset
 ```{r}
-fn = file.choose()
 Happy.Clean = saveRDS(happy, "happy.RDS")
 ```
 
+
+Exploration question
 ```{r}
+
 ```
 ```{r}
 ```
