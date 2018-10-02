@@ -73,17 +73,17 @@ sub
 #HAPPY does not need to be reordered
 
 #order marital by average age??
-levels(factor(happy$MARITAL, levels = c("NEVER MARRIED","SEPARATED","MARRIED","DIVORCED","WIDOWED",NA)))
-q#FINRELA
-levels(factor(happy$FINRELA, levels=c("FAR BELOW AVERAGE", "BELOW AVERAGE","AVERAGE","ABOVE AVERAGE","FAR ABOVE AVERAGE", NA)))
+happy$MARITAL = factor(happy$MARITAL, levels = c("NEVER MARRIED","SEPARATED","MARRIED","DIVORCED","WIDOWED",NA))
+#FINRELA
+happy$FINRELA = factor(happy$FINRELA, levels=c("FAR BELOW AVERAGE", "BELOW AVERAGE","AVERAGE","ABOVE AVERAGE","FAR ABOVE AVERAGE", NA))
 #HEALTH
-levels(factor(happy$HEALTH, levels=c("POOR","FAIR","GOOD","EXCELLENT",NA)))
+happy$HEALTH = factor(happy$HEALTH, levels=c("POOR","FAIR","GOOD","EXCELLENT",NA))
 #DEGREE
-levels(factor(happy$DEGREE, levels=c("LT HIGH SCHOOL","HIGH SCHOOL", "JUNIOR COLLEGE","BACHELOR","GRADUATE",NA)))
+happy$DEGREE = factor(happy$DEGREE, levels=c("LT HIGH SCHOOL","HIGH SCHOOL", "JUNIOR COLLEGE","BACHELOR","GRADUATE",NA))
 #PARTYID
-levels(factor(happy$PARTYID, levels =c("STRONG DEMOCRAT","NOT STR DEMOCRAT","IND,NEAR DEM","INDEPENDENT","IND,NEAR REP","NOT STR REPUBLICAN","STRONG REPUBLICAN","OTHER PARTY",NA)))
+happy$PARTYID = factor(happy$PARTYID, levels =c("STRONG DEMOCRAT","NOT STR DEMOCRAT","IND,NEAR DEM","INDEPENDENT","IND,NEAR REP","NOT STR REPUBLICAN","STRONG REPUBLICAN","OTHER PARTY",NA))
 #POLVIEWS
-levels(factor(happy$POLVIEWS,levels =c("EXTREMELY LIBERAL","LIBERAL","SLIGHTLY LIBERAL","MODERATE","SLIGHTLY CONSERVATIVE","CONSERVATIVE","EXTREMELY CONSERVATIVE",NA)))
+happy$POLVIEWS = factor(happy$POLVIEWS,levels =c("EXTREMELY LIBERAL","LIBERAL","SLIGHTLY LIBERAL","MODERATE","SLIGHTLY CONSERVATIVE","CONSERVATIVE","EXTREMELY CONSERVATIVE",NA))
 ```
 #Saving final dataset
 ```{r}
@@ -91,8 +91,6 @@ Happy.Clean = saveRDS(happy, "happy.RDS")
 ```
 <<<<<<< HEAD
 
-```{r}
-```
 
 Exploration question
 
@@ -107,5 +105,25 @@ library(ggmosaic)
 ggplot(data = happy) +
   geom_mosaic(aes(x = product(HAPPY, SEX), fill=MARITAL, weight=1)) + coord_flip()
 ```
+
+# Aisha's Ivestigation  
+How are Health, Marital Status, and Happiness related?
 ```{r}
+library(ggplot2) #AGE and HEALTH
+
+ggplot(happy, aes(x = HEALTH)) +
+  geom_bar(aes(fill = MARITAL)) +
+  facet_wrap(~HAPPY) +
+  coord_flip()
 ```
+
+Overall we can see that most people are "Pretty Happy" and less people are "Not Too Happy". In the Happy categories, people are mainly "Married" (or "Never Married") with most people in "Good" or "Excellent" health.  Meanwhile the "Not Too Happy" category doesn't appear to have any trends (though there are possibly more people in "Good" or "Fair"  health than in the other categories).
+
+#Lynn's investigation
+```{r}
+
+library(ggplot2)
+na.omit(happy) %>% ggplot(aes(x = DEGREE,  fill = HAPPY)) +  geom_bar(position = "fill") + theme(axis.text.x = element_text(angle = 45)) + facet_wrap(~PARTYID) + coord_flip()
+```
+
+Lynn chose to examine the relationship between level of education (DEGREE), political party affiliation (PARTYID), and happiness (HAPPY). These bar charts are arranged by DEGREE, faceted by PARTYID, and then proportionally filled by level of happiness. Among parties and edcuation levels, we see similar trends. The people most likely to rate themselves not too happy are those with those who have not completed a high school education, while those least likely to rate themselves as not too happy are those who have a graduate level education, with the exception of the independent and other party categories. It also appears that those who identify with the Republican party are more likely to rate themselves very happy than those who identify with the Democratic party. 
