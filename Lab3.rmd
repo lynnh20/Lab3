@@ -89,8 +89,6 @@ happy$POLVIEWS = factor(happy$POLVIEWS,levels =c("EXTREMELY LIBERAL","LIBERAL","
 ```{r}
 Happy.Clean = saveRDS(happy, "happy.RDS")
 ```
-<<<<<<< HEAD
-
 
 Exploration question
 
