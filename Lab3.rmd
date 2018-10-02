@@ -4,21 +4,21 @@ Names: Lynn Huang and Aisha Washington and also Prateek is here
 
 Link to github repository: https://github.com/lynnh20/Lab3/ 
 
-Reading in data and relevant packages
+## Reading in data and relevant packages
 ```{r}
 library(ggplot2)
 library(dplyr)
 library(productplots)
 data(happy)
-happy = readRDS("data/HAPPY.rds")
+happy = readRDS("HAPPY.rds")
 dim(happy)
 #Happy has 62,466 entries and 11 variables
 ```
 
-Cleaning questions:
+# Part One: Team Cleaning
 
-#1 Replace all instances of "IAP", "DK","NA" with NA.
-```{r}
+## 1. Replace all instances of "IAP", "DK","NA" with NA.
+```{}
 for (i in 1:62466)
 {
   for (j in 1:11)
@@ -43,11 +43,17 @@ for (i in 1:62466)
   
 }
 ```
-Cast any categorical variables to factor and replace "89 OR OLDER" in AGE to 89, then cast as numeric
+<font color = red> REMOVE ME! *alternate for Q2* </font>
+```{r}
+happy$POLVIEWS[(happy$POLVIEWS %in% c('IAP','DK','NA'))] = NA
+```
+
+## 2. Cast any categorical variables to factor and replace "89 OR OLDER" in AGE to 89, then cast as numeric
 ```{r}
 str(happy)
 ```
-We cast the variables: HAPPY, SEX,MARITAL,FINRELA,HEALTH,DEGREE, PARTYID, and POLVIEWS as factor variables
+
+We cast the variables: HAPPY,SEX,MARITAL,FINRELA,HEALTH,DEGREE, PARTYID, and POLVIEWS as factor variables
 ```{r}
 happy$AGE[happy$AGE == "89 OR OLDER"] = 89 
 happy$AGE = as.numeric(happy$AGE)
@@ -61,20 +67,24 @@ happy$PARTYID = as.factor(happy$PARTYID)
 happy$POLVIEWS = as.factor(happy$POLVIEWS)
 ```
 
-#Bring all levels of factors to a sensible order
+## 3. Bring all levels of factors to a sensible order
 
 MARITAL is now arranged in ascending order by average age, all other variables are arranged in an ascending order that fits the category. 
 ```{r}
 sub = happy %>% group_by(MARITAL) %>% summarise(mean = mean(AGE, na.rm = TRUE))
 sub
 ```
+*alternate version from class*
+```{r}
+happy$MARITAL <- reorder(happy$MARITAL, happy$AGE, mean)
+```
 
 ```{r}
 #HAPPY does not need to be reordered
 
 #order marital by average age??
-levels(factor(happy$MARITAL, levels = c("NEVER MARRIED","SEPARATED","MARRIED","DIVORCED","WIDOWED",NA)))
-q#FINRELA
+#levels(factor(happy$MARITAL, levels = c("NEVER MARRIED","SEPARATED","MARRIED","DIVORCED","WIDOWED",NA)))
+#FINRELA
 levels(factor(happy$FINRELA, levels=c("FAR BELOW AVERAGE", "BELOW AVERAGE","AVERAGE","ABOVE AVERAGE","FAR ABOVE AVERAGE", NA)))
 #HEALTH
 levels(factor(happy$HEALTH, levels=c("POOR","FAIR","GOOD","EXCELLENT",NA)))
@@ -85,18 +95,27 @@ levels(factor(happy$PARTYID, levels =c("STRONG DEMOCRAT","NOT STR DEMOCRAT","IND
 #POLVIEWS
 levels(factor(happy$POLVIEWS,levels =c("EXTREMELY LIBERAL","LIBERAL","SLIGHTLY LIBERAL","MODERATE","SLIGHTLY CONSERVATIVE","CONSERVATIVE","EXTREMELY CONSERVATIVE",NA)))
 ```
-```{r}
-```
-#Indivdual Portions
-#1: Prateek looked at the correlation marital status and happiness, which is a super basic question but he's a little lost because he's been missing class :C (please don't a mark down Lynn and Aisha if I did something wrong here)
+
+# Part Two: Indivdual Exploration
+
+## 1. Prateek looked at the correlation marital status and happiness, which is a super basic question but he's a little lost because he's been missing class :C (please don't a mark down Lynn and Aisha if I did something wrong here)
 But there's this mosaic plot which looks pretty cool. Mosaic plots allow you to find relationships by providing an overview of data and 
 bin size, so you can look at the area of the tiles to see what the relationships are. From there, you can tell that married men and women have the biggest bins in the pretty happy and very happy categories, while they are about even in the not happy category. There seems to be a less of an impact for the never married and separated demographics. 
 ```{r}
 library(ggplot2)
+#install.packages('ggmosaic')
 library(ggmosaic)
 
 ggplot(data = happy) +
   geom_mosaic(aes(x = product(HAPPY, SEX), fill=MARITAL, weight=1)) + coord_flip()
 ```
+
+## 2. Aisha examined how Health, Marital Status, and Happiness are related?
 ```{r}
+ggplot(happy, aes(x = HEALTH)) +
+  geom_bar(aes(fill = MARITAL)) +
+  facet_wrap(~HAPPY) +
+  coord_flip()
 ```
+
+Overall we can see that most people are "Pretty Happy" and fewer people are "Not Too Happy". In the Happy categories, people are mainly "Married" (or "Never Married") with most people in "Good" or "Excellent" health.  Meanwhile the "Not Too Happy" category doesn't appear to have any trends (though there are possibly more people in "Good" or "Fair"  health than in the other categories).
